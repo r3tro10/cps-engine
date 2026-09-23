@@ -1,19 +1,11 @@
-Updated todo list
 
-I’ll draft the README against the project’s current reality and the agreed destination: a simulation-first 6-DOF Physical AI platform, with completed work clearly separated from planned work. I’ll keep it ready to paste into `README.md` without claiming features that do not exist yet.
-
-Read 
-
-Here is a technically accurate placement-focused draft for `README.md`:
-
-```markdown
 # CPS Engine
 
 A C++20 learning project evolving toward a simulation-first Cyber-Physical Systems and Physical AI platform.
 
 The long-term goal is to connect perception, state estimation, planning, control, and simulated robot actuation in a closed loop:
 
-**Sense -> Estimate -> Plan -> Actuate -> Observe**
+**Sense → Estimate → Plan → Actuate → Observe**
 
 The current version is an educational sensor-management prototype. The planned system will grow into a Dockerized ROS 2 application controlling a simulated 6-DOF robotic arm using C++ control software and YOLO/ONNX perception.
 
@@ -93,13 +85,13 @@ The output includes simulated hardware connection messages, telemetry reads, and
 
 ```text
 .
-├── `CMakeLists.txt`
-├── `main.cpp`
-├── `sensor.hpp`
-├── `sensor.cpp`
-├── `sensor_manager.hpp`
-├── `sensor_manager.cpp`
-├── `isensor.hpp`
+├── CMakeLists.txt
+├── main.cpp
+├── sensor.hpp
+├── sensor.cpp
+├── sensor_manager.hpp
+├── sensor_manager.cpp
+├── isensor.hpp
 └── learning/
     ├── concepts.md
     ├── mistakes.md
@@ -216,8 +208,3 @@ The initial implementation will focus on simulation and reproducibility. Physica
 ## License
 
 No license has been selected yet.
-```
-
-This version presents the existing code honestly while giving placement reviewers a clear view of the intended engineering direction.
-
-Created 5 todos
