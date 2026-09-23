@@ -1,4 +1,12 @@
+Updated todo list
 
+I’ll draft the README against the project’s current reality and the agreed destination: a simulation-first 6-DOF Physical AI platform, with completed work clearly separated from planned work. I’ll keep it ready to paste into `README.md` without claiming features that do not exist yet.
+
+Read 
+
+Here is a technically accurate placement-focused draft for `README.md`:
+
+```markdown
 # CPS Engine
 
 A C++20 learning project evolving toward a simulation-first Cyber-Physical Systems and Physical AI platform.
@@ -208,3 +216,8 @@ The initial implementation will focus on simulation and reproducibility. Physica
 ## License
 
 No license has been selected yet.
+```
+
+This version presents the existing code honestly while giving placement reviewers a clear view of the intended engineering direction.
+
+Created 5 todos
