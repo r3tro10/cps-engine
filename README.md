@@ -1,4 +1,3 @@
-```markdown
 # CPS Engine
 
 A C++20 learning project evolving toward a simulation-first Cyber-Physical Systems and Physical AI platform.
