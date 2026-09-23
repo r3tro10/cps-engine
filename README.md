@@ -1,202 +1,223 @@
-# Manware's AI Learning Toolkit
+Updated todo list
 
-A customization that turns AI into a **learning companion** instead of a code generator. It makes you think, predict, and reason — while AI guides, questions, and diagnoses.
+I’ll draft the README against the project’s current reality and the agreed destination: a simulation-first 6-DOF Physical AI platform, with completed work clearly separated from planned work. I’ll keep it ready to paste into `README.md` without claiming features that do not exist yet.
 
-**Core idea:** You try first. AI helps only after you commit to an answer.
+Read 
 
-> **Looking for a different AI agent?** This repo has separate branches for each supported tool. Switch to the branch matching your agent — `copilot`, `cursor`, `claude-code`, `opencode`, or `antigravity` — to get the right configuration and code.
+Here is a technically accurate placement-focused draft for `README.md`:
 
----
+```markdown
+# CPS Engine
 
-## How It Works
+A C++20 learning project evolving toward a simulation-first Cyber-Physical Systems and Physical AI platform.
 
-```
-You try → You predict → AI gives hints → You implement → You test → You explain → AI reviews → You retrieve later
-```
+The long-term goal is to connect perception, state estimation, planning, control, and simulated robot actuation in a closed loop:
 
-AI never writes the solution for you. It asks questions, gives small hints, and tests your understanding. The harder you think, the more you learn.
+**Sense -> Estimate -> Plan -> Actuate -> Observe**
 
----
+The current version is an educational sensor-management prototype. The planned system will grow into a Dockerized ROS 2 application controlling a simulated 6-DOF robotic arm using C++ control software and YOLO/ONNX perception.
 
-## Quick Start
+## Current Status
 
-1. **Clone or copy this repo** into your project (or use it as a template).
-2. **Open GitHub Copilot Chat** in your editor.
-3. **Type a slash command** like `/hint`, `/debug`, `/explain`, etc.
-4. **Answer the questions** Copilot asks you. Don't skip them — that's where the learning happens.
-5. **Write the code yourself.** AI will guide, not write.
+The repository currently demonstrates:
 
-> **Important!:** Disable Copilot inline completions while learning. Use Chat mode only.
+- Modern C++20 project configuration with CMake
+- Sensor object construction and destruction
+- Exclusive ownership with `std::unique_ptr`
+- Ownership transfer using `std::move`
+- Non-copyable sensor objects
+- Automatic cleanup through RAII
+- A manager class responsible for a collection of sensors
+- Simulated telemetry reads from multiple named sensors
 
----
+The current implementation does not yet include real hardware drivers, robot control, ROS 2, kinematics, computer vision, or machine-learning inference.
 
-## The 12 Prompts
+## Current Demonstration
 
-Each prompt is a workflow. Invoke it with a `/command` in Copilot Chat.
+The executable creates three simulated sensors:
 
-### `/learn`
-**The entry point.** Tell it what you want to learn, and it picks the right workflow for you. Use this when you're not sure which prompt to use.
+- `LiDAR_Front`
+- `IMU_Primary`
+- `Depth_Cam_0`
 
-**Use when:** You're starting a session and don't know where to begin.
+Ownership is transferred from `main()` to `SensorManager`. The manager then reads from every sensor and automatically releases them when it goes out of scope.
 
----
+This demonstrates the ownership flow:
 
-### `/hint`
-**Your main problem-solving tool.** First, you predict what should happen. Then, AI gives you the smallest hint needed — one level at a time, from a question all the way up to full code (only if you ask for it).
-
-**Use when:** You're stuck on a problem, bug, or concept and want incremental help without being handed the answer.
-
----
-
-### `/debug`
-**Bug diagnosis through hypothesis testing.** AI asks what you expected, what happened, and what you think is wrong — then guides you to find the bug yourself.
-
-**Use when:** Your code doesn't work and you want to understand *why*, not just get a fix.
-
----
-
-### `/autopsy`
-**Post-mortem after fixing a bug.** You fill in what happened, what you believed, what actually happened, and what you missed. AI classifies the bug and suggests prevention.
-
-**Use when:** You just fixed a non-trivial bug and want to learn from it so it doesn't happen again.
-
----
-
-### `/read`
-**Understand unfamiliar code.** AI asks you concrete questions one at a time: "What does this input produce?" "What happens after iteration 3?" You reconstruct the mental model yourself.
-
-**Use when:** You're reading someone else's code, old code, framework internals, or library source.
-
----
-
-### `/code-review`
-**Educational code review.** Before AI reviews your code, you identify the weakest part yourself. Then AI labels issues by severity and asks discovery questions instead of rewriting your code.
-
-**Use when:** You've written something and want a senior-developer-style review that teaches you.
-
----
-
-### `/test`
-**Design tests before implementing.** You state the contract, identify the smallest passing/failing inputs, and derive test cases. AI exposes ambiguities in your spec.
-
-**Use when:** You're about to implement a feature and want to think through edge cases first.
-
----
-
-### `/explore`
-**Explore design space.** You defend your current solution, AI offers conceptually different alternatives, then introduces constraints one at a time to stress-test your design.
-
-**Use when:** You have a working solution and want to understand tradeoffs, or when you want to practice handling real-world constraints like scale, concurrency, or failure.
-
----
-
-### `/arch`
-**Architecture interview.** AI asks one focused question at a time about requirements, state, interfaces, failure modes, etc. You sketch the design; AI challenges your assumptions.
-
-**Use when:** You're designing a non-trivial feature and want to think through it before coding.
-
----
-
-### `/explain`
-**Teach-back test.** You explain a concept in your own words, as if teaching a beginner. AI probes for gaps, vague terms, and contradictions — then gives a concise assessment.
-
-**Use when:** You think you understand something and want to verify it.
-
----
-
-### `/retrieve`
-**Spaced retrieval practice.** AI reads your learning logs (if they exist) and asks you a short mix of prediction, debugging, and application questions from past material.
-
-**Use when:** You're starting a coding session and want a quick warm-up to reinforce what you've learned.
-
----
-
-### `/api`
-**Learn an API deeply.** AI walks you through 7 questions: what problem it solves, what assumptions it makes, what alternatives exist, when *not* to use it, and its failure modes. Then it points you to official docs.
-
-**Use when:** You encounter a new library, framework, or API and want real understanding, not just syntax.
-
----
-
-## The 4 Skills
-
-Skills are reusable behaviors that work across multiple prompts. You don't invoke them directly, they shape how AI responds when relevant.
-
-| Skill | What it does |
-|---|---|
-| **debugging** | Separates expected vs actual behavior, requires a hypothesis before suggesting causes, picks the smallest next experiment. |
-| **examination** | Tests understanding through prediction, explanation, application, and transfer. Corrects the smallest misconception first. |
-| **code-review** | Prioritizes correctness over style, asks discovery questions before rewrites, distinguishes bugs from preferences. |
-| **retrieval** | Mixes recent and older material, prefers prediction over definitions, adapts difficulty to your performance. |
-
----
-
-## Learning Logs (Optional)
-
-A lightweight folder for recording meaningful learning events. You don't need to update these after every interaction, but only when something sticks, or at the end of the day.
-
-```
-learning/
-├── mistakes.md    # Bugs, misconceptions, recurring patterns
-├── concepts.md    # Durable understanding worth keeping
-├── questions.md   # Unresolved questions to revisit
-└── review.md      # Retrieval prompts and review metadata
+```text
+main()
+  |
+  | creates sensors
+  v
+std::unique_ptr<Sensor>
+  |
+  | std::move()
+  v
+SensorManager
+  |
+  | readAllSensors()
+  v
+sensor telemetry
+  |
+  | manager destruction
+  v
+automatic resource cleanup
 ```
 
-The `/retrieve` prompt reads these files to personalize your review sessions.
+## Build and Run
 
----
+### Requirements
 
-## Adaptive Behavior
+- CMake 3.10 or newer
+- A C++20-compatible compiler
+- macOS, Linux, or another platform supported by the compiler and CMake
 
-The toolkit adapts to you:
+### Build
 
-- **If you're solving things easily:** AI asks deeper "why" questions, introduces harder constraints, and reduces unnecessary prompting.
-- **If you're struggling:** AI lowers the hint level, revisits prerequisites, and creates targeted practice — without just giving you the answer.
+From the project root:
 
----
-
-## Shipping Mode
-
-This toolkit is for learning. When you need to ship:
-
-> Just say **"ship this"** or ask for a direct implementation.
-
-AI will switch to normal engineering mode. The learning rules only apply when you invoke a learning prompt.
-
----
-
-## How It's Organized
-
-```
-.github/
-├── copilot-instructions.md    # Global learning philosophy
-├── prompts/                   # 12 user-facing workflows (slash commands)
-├── instructions/              # Rules for learning log files
-└── skills/                    # 4 reusable AI behaviors
-learning/                      # Optional learning logs
+```bash
+cmake -S . -B build
+cmake --build build
 ```
 
----
+### Run
 
-## Requirements
+```bash
+./build/cps_engine
+```
 
-- **GitHub Copilot** (Chat mode) in your editor
-- No other dependencies, scripts, or setup needed
+The output includes simulated hardware connection messages, telemetry reads, and cleanup messages during shutdown. Heap addresses printed by the demo will vary between runs.
 
----
+## Project Structure
 
-## Limitations
+```text
+.
+├── `CMakeLists.txt`
+├── `main.cpp`
+├── `sensor.hpp`
+├── `sensor.cpp`
+├── `sensor_manager.hpp`
+├── `sensor_manager.cpp`
+├── `isensor.hpp`
+└── learning/
+    ├── concepts.md
+    ├── mistakes.md
+    ├── questions.md
+    └── review.md
+```
 
-- **Skills** require a Copilot plan that supports custom skills. Prompts work everywhere.
-- **Learning logs** are optional and manual. The toolkit works fine without them.
-- **Inline completions** must be disabled manually in your editor settings.
-- This is a prompt-based toolkit, not an app. It works through Copilot Chat conversations.
+### Components
 
----
+- `main.cpp`  
+  Application entry point and current sensor-fleet demonstration.
 
-## Philosophy
+- `sensor.hpp` / `sensor.cpp`  
+  Concrete simulated sensor implementation. It currently allocates a small heap buffer to demonstrate resource ownership and cleanup.
 
-> Make AI reduce the friction around learning programming **without reducing the amount of thinking the learner has to do.**
+- `sensor_manager.hpp` / `sensor_manager.cpp`  
+  Owns sensors in a `std::vector<std::unique_ptr<Sensor>>` and provides fleet-wide reading.
 
-If you're not thinking, you're not learning.
+- `isensor.hpp`  
+  Initial abstract sensor interface. It is currently prepared for future use but is not yet implemented by `Sensor`.
+
+- `CMakeLists.txt`  
+  Defines the C++20 executable and build configuration.
+
+## Planned Architecture
+
+The project will evolve in stages toward the following architecture:
+
+```text
+Camera / Sensors
+       |
+       v
+Perception and State Estimation
+       |
+       v
+Target Pose / Robot State
+       |
+       v
+Kinematics and Planning
+       |
+       v
+Controller
+       |
+       v
+Actuator Interface
+       |
+       v
+Simulated 6-DOF Robot Arm
+```
+
+The reusable control and robotics code will remain independent from ROS 2 where possible. ROS 2 and simulator-specific code will act as integration layers around the core library.
+
+## Development Roadmap
+
+### Phase 1: Core Control
+
+- Define measurement, command, timestamp, frame, and status types
+- Replace concrete sensor dependencies with interfaces
+- Add an actuator interface
+- Add a deterministic simulated arm backend
+- Implement forward and inverse kinematics using Eigen
+- Add bounded controller commands and safety limits
+- Add unit tests with a deterministic fake clock
+
+### Phase 2: ROS 2 Simulation
+
+- Add a Docker-based ROS 2 development environment
+- Add a generic 6-DOF arm URDF
+- Connect joint-state feedback to the core library
+- Send controller commands to the simulated arm
+- Add launch files, parameters, and RViz visualization
+- Measure control-loop rate and timing jitter
+
+### Phase 3: Physical AI Perception
+
+- Add camera or depth input
+- Integrate YOLO/ONNX object detection
+- Transform detected objects into robot coordinates
+- Convert detections into end-effector targets
+- Connect perception output to inverse kinematics and control
+- Demonstrate the simulated arm tracking a detected object
+
+### Phase 4: Reliability and Deployment
+
+- Add handling for stale data, failed inference, simulator disconnects, and invalid targets
+- Separate perception and control scheduling
+- Add bounded queues or atomic state snapshots
+- Add continuous integration for builds and tests
+- Document measured performance and known limitations
+- Add a recorded end-to-end demonstration
+
+## Engineering Goals
+
+This project is intended to demonstrate practical skills in:
+
+- Modern C++
+- Resource ownership and RAII
+- Object-oriented design
+- Hardware abstraction
+- Robotics software architecture
+- Kinematics and coordinate frames
+- Feedback control
+- Simulation-first development
+- Perception-to-action pipelines
+- Testing and failure handling
+- Docker and ROS 2 integration
+
+## Scope
+
+This is currently a learning and portfolio project, not a production robotics engine.
+
+The initial implementation will focus on simulation and reproducibility. Physical motor drivers, CAN or serial communication, hard real-time guarantees, safety certification, and deployment to a physical robot will only be added after a specific hardware platform and safety model have been selected.
+
+## License
+
+No license has been selected yet.
+```
+
+This version presents the existing code honestly while giving placement reviewers a clear view of the intended engineering direction.
+
+Created 5 todos
