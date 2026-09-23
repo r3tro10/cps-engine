@@ -1,0 +1,1 @@
+/usr/bin/clang++ -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cps_engine.dir/main.cpp.o CMakeFiles/cps_engine.dir/sensor.cpp.o CMakeFiles/cps_engine.dir/sensor_manager.cpp.o -o cps_engine
