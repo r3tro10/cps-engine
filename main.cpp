@@ -1,30 +1,33 @@
+#include "sensor.hpp"
 #include "sensor_manager.hpp"
-#include <memory>
 #include <iostream>
+#include <memory>
 
 int main() {
-    std::cout << "--- Booting CPS Fleet Engine ---\n";
+    std::cout << "=== CPS Engine: Boot Sequence ===\n\n";
 
-    SensorManager manager;
-
-    // Instantiate hardware components dynamically
+    // 1. Instantiation: Create concrete hardware drivers on the heap
+    // Note: Using make_unique for exception-safe memory allocation
     auto lidar = std::make_unique<Sensor>("LiDAR_Front");
     auto imu = std::make_unique<Sensor>("IMU_Primary");
     auto camera = std::make_unique<Sensor>("Depth_Cam_0");
 
-    // Transfer ownership of sensors to the manager fleet
-    manager.addSensor(std::move(lidar));
-    manager.addSensor(std::move(imu));
-    manager.addSensor(std::move(camera));
+    SensorManager manager;
 
-    // Notice: 'lidar', 'imu', and 'camera' in main() are now nullptr!
-    // The manager is now the sole owner of all 3 heap objects.
+    std::cout << "\n[LIFECYCLE] Transferring ownership to SensorManager...\n";
+    
+    // 2. Dependency Injection: Move ownership into the core manager.
+    // 'std::move' signals that 'main' no longer controls these resources.
+    manager.add_sensor(std::move(lidar));
+    manager.add_sensor(std::move(imu));
+    manager.add_sensor(std::move(camera));
 
-    // Telemetry pass across all connected hardware
-    manager.readAllSensors();
+    std::cout << "\n[EXECUTION] Starting telemetry acquisition cycle:\n";
+    manager.read_all_sensors();
 
-    std::cout << "\n--- Engine Shutting Down ---\n";
-    return 0; 
-    // When manager goes out of scope here, sensorFleet is destroyed,
-    // which automatically calls the destructor (~Sensor()) for all 3 sensors!
+    // 3. Shutdown: Exiting scope triggers the Manager's destructor.
+    // This automatically cascades the deletion of all contained Sensors.
+    std::cout << "\n[SHUTDOWN] System halt. Initiating RAII teardown...\n";
+    
+    return 0;
 }

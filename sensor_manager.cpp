@@ -1,17 +1,15 @@
 #include "sensor_manager.hpp"
-#include <iostream>
 
-void SensorManager::addSensor(std::unique_ptr<Sensor> sensor) {
-    // std::unique_ptr cannot be copied. 
-    // We MUST use std::move to transfer ownership into the vector.
-    sensorFleet.push_back(std::move(sensor));
+void SensorManager::add_sensor(std::unique_ptr<Sensor> sensor) {
+    if (sensor) {
+        // Move semantics: Transfer ownership from caller (Stack) to Manager (Vector)
+        sensors_.push_back(std::move(sensor));
+    }
 }
 
-void SensorManager::readAllSensors() const {
-    std::cout << "\n--- Reading Telemetry From All Fleet Sensors ---\n";
-    for (const auto& sensor : sensorFleet) {
-        if (sensor != nullptr) {
-            sensor->readData(); // Borrowed call to member function
-        }
+void SensorManager::read_all_sensors() {
+    // Iterate through the fleet to execute the control loop cycle
+    for (const auto& sensor : sensors_) {
+        sensor->read_telemetry();
     }
 }

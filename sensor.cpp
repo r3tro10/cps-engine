@@ -1,20 +1,20 @@
 #include "sensor.hpp"
-#include <iostream>
 
-// Constructor: Allocates the heap memory
-Sensor::Sensor(const std::string& name) : sensorName(name) {
-    std::cout << "[Hardware] Connecting to " << sensorName << "...\n";
-    rawDataBuffer = new int(0); // 🏗️ Allocate on the Heap
+Sensor::Sensor(std::string name) : name_(std::move(name)) {
+    // LOG: Trace hardware initialization events for system audit
+    std::cout << "[SYSTEM] Sensor initialized: " << name_ << "\n";
 }
 
-// Destructor: Safely deletes the heap memory
 Sensor::~Sensor() {
-    std::cout << "[Hardware] Disconnecting " << sensorName << " and freeing memory...\n";
-    delete rawDataBuffer; // 💧 Prevent memory leak
+    // LOG: Verify resource release sequence during shutdown
+    std::cout << "[SYSTEM] Sensor destroyed (RAII Cleanup): " << name_ << "\n";
 }
 
-// Read method
-void Sensor::readData() const {
-    std::cout << "[Hardware] Reading from " << sensorName 
-              << " at heap address: " << rawDataBuffer << "\n";
+void Sensor::read_telemetry() {
+    // TODO(r3tro10): Replace console output with actual serial/I2C buffer read
+    std::cout << "Reading telemetry from: " << name_ << "...\n";
+}
+
+std::string Sensor::get_name() const {
+    return name_;
 }
