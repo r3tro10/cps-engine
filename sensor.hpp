@@ -15,7 +15,7 @@ public:
     Sensor(Sensor&&) noexcept = default;
     Sensor& operator=(Sensor&&) noexcept = default;
 
-    void readTelemetry() const;
+    void read_telemetry() const;
 
 private:
     std::string name_;

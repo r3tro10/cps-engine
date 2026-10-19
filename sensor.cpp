@@ -18,6 +18,6 @@ Sensor::~Sensor() {
     }
 }
 
-void Sensor::readTelemetry() const {
+void Sensor::read_telemetry() const {
     std::cout << "[Telemetry] Reading from " << name_ << "...\n";
 }
