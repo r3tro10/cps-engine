@@ -13,15 +13,15 @@ public:
 
     // Requires every concrete actuator to implement command handling.
     virtual JointState getState() const = 0;
-    
+
     // Requires every concrete actuator to provide telemetry, while promising not to modify the actuator during the read.
     virtual void update(double dt) = 0;
 
     // Requires every concrete actuator to implement time-step processing.
-    IActuator(const IActuator&) = delete;
-    IActuator& operator=(const IActuator&) = delete;
+    IActuator(const IActuator &) = delete;
+    IActuator &operator=(const IActuator &) = delete;
 
-// Prevents copying and assigning actuator objects.
+    // Prevents copying and assigning actuator objects.
 protected:
     IActuator() = default;
 };

@@ -3,7 +3,12 @@
 #include <iostream>
 #include <memory>
 
-int main() {
+class MockActuator : public IActuator
+{
+};
+
+int main()
+{
     std::cout << "=== CPS Engine: Boot Sequence ===\n\n";
 
     // 1. Instantiation: Create concrete hardware drivers on the heap
@@ -15,7 +20,7 @@ int main() {
     SensorManager manager;
 
     std::cout << "\n[LIFECYCLE] Transferring ownership to SensorManager...\n";
-    
+
     // 2. Dependency Injection: Move ownership into the core manager.
     // 'std::move' signals that 'main' no longer controls these resources.
     manager.add_sensor(std::move(lidar));
@@ -28,6 +33,6 @@ int main() {
     // 3. Shutdown: Exiting scope triggers the Manager's destructor.
     // This automatically cascades the deletion of all contained Sensors.
     std::cout << "\n[SHUTDOWN] System halt. Initiating RAII teardown...\n";
-    
+
     return 0;
 }

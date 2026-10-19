@@ -6,11 +6,12 @@
 
 /**
  * @brief Orchestrates the lifecycle and execution of the sensor fleet.
- * 
+ *
  * ARCHITECTURE: Maintains exclusive ownership of all sensor resources.
  * This ensures a single point of truth for hardware state management.
  */
-class SensorManager {
+class SensorManager
+{
 public:
     SensorManager() = default;
     ~SensorManager() = default;
