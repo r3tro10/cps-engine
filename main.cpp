@@ -1,10 +1,32 @@
 #include "sensor.hpp"
 #include "sensor_manager.hpp"
+#include "actuators/iactuator.hpp"
+#include "control/pid.hpp"
+#include <chrono>
+#include <thread>
 #include <iostream>
 #include <memory>
 
 class MockActuator : public IActuator
 {
+private:
+    JointState state_{};
+
+public:
+    void setCommand(double target_effort) override
+    {
+        state_.effort = target_effort;
+    }
+    JointState getState() const override
+    {
+        return state_;
+    }
+    void update(double dt) override
+    {
+        state_.velocity += state_.effort * dt;
+        state_.velocity *= 0.95;
+        state_.position += state_.velocity * dt;
+    }
 };
 
 int main()
@@ -16,6 +38,23 @@ int main()
     auto lidar = std::make_unique<Sensor>("LiDAR_Front");
     auto imu = std::make_unique<Sensor>("IMU_Primary");
     auto camera = std::make_unique<Sensor>("Depth_Cam_0");
+
+    PIDController pid(2.0, 0.1, 0.5, -10.0, 10.0);
+    MockActuator motor;
+
+    const double target_rad = 1.57;
+    const double dt = 0.02;
+    for (int step = 0; step < 100; ++step) // increment step at the end
+    {
+        JointState state = motor.getState();
+        double effort = pid.compute(target_rad, state.position, dt);
+        motor.setCommand(effort);
+        motor.update(dt);
+
+        std::cout << state.position + effort;
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
 
     SensorManager manager;
 
