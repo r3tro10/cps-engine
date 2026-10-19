@@ -20,7 +20,7 @@ double PIDController::compute(double setpoint, double measured, double dt)
     }
     else
     {
-        const double derivative = (measured - prev_measured_) / dt;
+        const double derivative = -(measured - prev_measured_) / dt;
     }
 
     const double raw_output = (kp_ * error) + (ki_ * integral_err_) + (kd_ * derivative);
