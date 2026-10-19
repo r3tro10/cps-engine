@@ -201,6 +201,30 @@ sensor_manager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cps_engine.dir/build.make CMakeFiles/cps_engine.dir/sensor_manager.cpp.s
 .PHONY : sensor_manager.cpp.s
 
+src/control/pid.o: src/control/pid.cpp.o
+.PHONY : src/control/pid.o
+
+# target to build an object file
+src/control/pid.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cps_engine.dir/build.make CMakeFiles/cps_engine.dir/src/control/pid.cpp.o
+.PHONY : src/control/pid.cpp.o
+
+src/control/pid.i: src/control/pid.cpp.i
+.PHONY : src/control/pid.i
+
+# target to preprocess a source file
+src/control/pid.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cps_engine.dir/build.make CMakeFiles/cps_engine.dir/src/control/pid.cpp.i
+.PHONY : src/control/pid.cpp.i
+
+src/control/pid.s: src/control/pid.cpp.s
+.PHONY : src/control/pid.s
+
+# target to generate assembly for a file
+src/control/pid.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cps_engine.dir/build.make CMakeFiles/cps_engine.dir/src/control/pid.cpp.s
+.PHONY : src/control/pid.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -219,6 +243,9 @@ help:
 	@echo "... sensor_manager.o"
 	@echo "... sensor_manager.i"
 	@echo "... sensor_manager.s"
+	@echo "... src/control/pid.o"
+	@echo "... src/control/pid.i"
+	@echo "... src/control/pid.s"
 .PHONY : help
 
 

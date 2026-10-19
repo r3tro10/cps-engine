@@ -1,23 +1,4 @@
 #pragma once
-#include <string>
-
-class ISensor {
-public:
-    virtual ~ISensor() = default;
-
-    // Pure virtual interface: must be implemented by concrete drivers
-    virtual void readData() const = 0;
-    virtual std::string getName() const = 0;
-
-    // Non-copyable base to safeguard hardware ownership
-    ISensor(const ISensor&) = delete;
-    ISensor& operator=(const ISensor&) = delete;
-
-protected:
-    ISensor() = default;
-};
-
-#pragma once
 
 #include <string>
 
@@ -27,12 +8,23 @@ protected:
  */
 class ISensor {
 public:
-    // Virtual destructor guarantees complete cleanup of derived allocations through base pointers
+    // 1. Virtual Destructor: Guarantees complete cleanup of derived allocations through base pointers
     virtual ~ISensor() = default;
 
-    // Pure virtual method mapping to physical sensor data acquisition loops
-    virtual void read_telemetry() = 0;
+    // 2. Pure Virtual Interface: Must be implemented by concrete drivers
+    // Note: read_telemetry should be non-const because reading hardware often clears registers or updates states
+    virtual double read_telemetry() = 0; 
     
-    // Returns immutable hardware identifier used for node tracking and routing
+    // Note: get_name is const because reading a static string identifier never updates object state
     virtual std::string get_name() const = 0;
+
+    // 3. Non-copyable base to safeguard hardware ownership
+    ISensor(const ISensor&) = delete;
+    ISensor& operator=(const ISensor&) = delete;
+
+protected:
+    // Allow derived classes to be default-constructed or moved safely
+    ISensor() = default;
+    ISensor(ISensor&&) noexcept = default;
+    ISensor& operator=(ISensor&&) noexcept = default;
 };

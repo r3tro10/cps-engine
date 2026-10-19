@@ -13,7 +13,8 @@ private:
     double max_out_;
 
     double integral_err_ = 0.0;
-    double prev_err_ = 0.0;
+    double prev_measured_ = 0.0;
+    bool is_first_step_ = true;
 
 public:
     // Used a member-initiliser then define it in pid.cpp to properly initilise members to prevent undefined behavior

@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/cps_engine.dir/sensor.cpp.o.d"
   "CMakeFiles/cps_engine.dir/sensor_manager.cpp.o"
   "CMakeFiles/cps_engine.dir/sensor_manager.cpp.o.d"
+  "CMakeFiles/cps_engine.dir/src/control/pid.cpp.o"
+  "CMakeFiles/cps_engine.dir/src/control/pid.cpp.o.d"
   "cps_engine"
   "cps_engine.pdb"
 )

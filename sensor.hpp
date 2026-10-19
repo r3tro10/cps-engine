@@ -1,29 +1,25 @@
 #pragma once
-
 #include <string>
-#include <iostream>
 
-/**
- * @brief Concrete Sensor implementation.
- * Represents a physical hardware node in the simulation loop.
- * 
- * DESIGN NOTE: Uses strict RAII patterns to ensure hardware resources 
- * are released deterministically when the object goes out of scope.
- */
 class Sensor {
 public:
-    // Explicit: Prevents accidental implicit type conversions (e.g., string -> Sensor)
-    explicit Sensor(std::string name);
+    // Constructor and Destructor
+    Sensor(std::string name);
+    ~Sensor(); // Crucial for cleaning up our heap buffer (RAII)
 
-    // Default destructor handles automatic cleanup of stack members
-    ~Sensor();
+    // --- README Requirement: Non-copyable sensor objects ---
+    Sensor(const Sensor&) = delete;            // Disallow copy constructor
+    Sensor& operator=(const Sensor&) = delete; // Disallow copy assignment
 
-    // Simulates the I/O operation of fetching a data frame from hardware
-    void read_telemetry();
+    // --- Allow Move Semantics (so std::unique_ptr and std::move work) ---
+    Sensor(Sensor&&) noexcept = default;
+    Sensor& operator=(Sensor&&) noexcept = default;
 
-    // Accessor for the immutable hardware ID
-    std::string get_name() const;
+    void readTelemetry() const;
 
 private:
-    std::string name_; // Unique hardware identifier used for logging/debugging
+    std::string name_;
+    
+    // --- README Requirement: Allocates a small heap buffer ---
+    int* heap_buffer_; 
 };
