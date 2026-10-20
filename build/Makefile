@@ -201,6 +201,30 @@ sensor_manager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cps_engine.dir/build.make CMakeFiles/cps_engine.dir/sensor_manager.cpp.s
 .PHONY : sensor_manager.cpp.s
 
+src/actuators/mock_actuator.o: src/actuators/mock_actuator.cpp.o
+.PHONY : src/actuators/mock_actuator.o
+
+# target to build an object file
+src/actuators/mock_actuator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cps_engine.dir/build.make CMakeFiles/cps_engine.dir/src/actuators/mock_actuator.cpp.o
+.PHONY : src/actuators/mock_actuator.cpp.o
+
+src/actuators/mock_actuator.i: src/actuators/mock_actuator.cpp.i
+.PHONY : src/actuators/mock_actuator.i
+
+# target to preprocess a source file
+src/actuators/mock_actuator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cps_engine.dir/build.make CMakeFiles/cps_engine.dir/src/actuators/mock_actuator.cpp.i
+.PHONY : src/actuators/mock_actuator.cpp.i
+
+src/actuators/mock_actuator.s: src/actuators/mock_actuator.cpp.s
+.PHONY : src/actuators/mock_actuator.s
+
+# target to generate assembly for a file
+src/actuators/mock_actuator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cps_engine.dir/build.make CMakeFiles/cps_engine.dir/src/actuators/mock_actuator.cpp.s
+.PHONY : src/actuators/mock_actuator.cpp.s
+
 src/control/pid.o: src/control/pid.cpp.o
 .PHONY : src/control/pid.o
 
@@ -243,6 +267,9 @@ help:
 	@echo "... sensor_manager.o"
 	@echo "... sensor_manager.i"
 	@echo "... sensor_manager.s"
+	@echo "... src/actuators/mock_actuator.o"
+	@echo "... src/actuators/mock_actuator.i"
+	@echo "... src/actuators/mock_actuator.s"
 	@echo "... src/control/pid.o"
 	@echo "... src/control/pid.i"
 	@echo "... src/control/pid.s"
