@@ -51,8 +51,10 @@ int main()
         motor.setCommand(effort);
         motor.update(dt);
 
-        std::cout << state.position + effort;
-
+        std::cout << "[Step " << step << "] "
+                  << "Pos: " << state.position << " rad | "
+                  << "Err: " << (target_rad - state.position) << " rad | "
+                  << "Effort: " << effort << "\n";
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 
