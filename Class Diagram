@@ -5,9 +5,9 @@ classDiagram
     class IActuator {
         <<interface>>
         +~IActuator()
-        +setCommand(target_effort: double)* void
-        +getState()* JointState
-        +update(dt: double)* void
+        +setCommand(target_effort: double) void
+        +getState() JointState
+        +update(dt: double) void
         #IActuator()
     }
 
@@ -21,21 +21,21 @@ classDiagram
     class ISensor {
         <<interface>>
         +~ISensor()
-        +read_telemetry()* double
-        +get_name()* string
+        +read_telemetry() double
+        +get_name() string
         #ISensor()
     }
 
     class Sensor {
         -name_: string
-        -heap_buffer_: int*
+        -heap_buffer_: int_ptr
         +Sensor(name: string)
         +~Sensor()
         +read_telemetry() void
     }
 
     class SensorManager {
-        -sensors_: vector~unique_ptr~Sensor~~
+        -sensors_: vector~Sensor~
         +SensorManager()
         +~SensorManager()
         +add_sensor(sensor: unique_ptr~Sensor~) void
@@ -55,7 +55,6 @@ classDiagram
         +compute(setpoint: double, measured: double, dt: double) double
     }
 
-    %% Relationships
     MockActuator ..|> IActuator : implements
     SensorManager *-- Sensor : owns via unique_ptr
 ```
