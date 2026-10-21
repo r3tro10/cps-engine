@@ -1,3 +1,4 @@
+```mermaid
 classDiagram
     direction LR
 
@@ -57,3 +58,4 @@ classDiagram
     %% Relationships
     MockActuator ..|> IActuator : implements
     SensorManager *-- Sensor : owns via unique_ptr
+```
