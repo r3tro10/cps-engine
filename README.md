@@ -29,3 +29,63 @@ cmake --build build
 ```
 
 ---
+```mermaid
+classDiagram
+    direction LR
+
+    class IActuator {
+        <<interface>>
+        +~IActuator()
+        +setCommand(target_effort: double) void
+        +getState() JointState
+        +update(dt: double) void
+        #IActuator()
+    }
+
+    class MockActuator {
+        -state_: JointState
+        +setCommand(target_effort: double) void
+        +getState() JointState
+        +update(dt: double) void
+    }
+
+    class ISensor {
+        <<interface>>
+        +~ISensor()
+        +read_telemetry() double
+        +get_name() string
+        #ISensor()
+    }
+
+    class Sensor {
+        -name_: string
+        -heap_buffer_: int_ptr
+        +Sensor(name: string)
+        +~Sensor()
+        +read_telemetry() void
+    }
+
+    class SensorManager {
+        -sensors_: vector~Sensor~
+        +SensorManager()
+        +~SensorManager()
+        +add_sensor(sensor: unique_ptr~Sensor~) void
+        +read_all_sensors() void
+    }
+
+    class PIDController {
+        -kp_: double
+        -ki_: double
+        -kd_: double
+        -min_out_: double
+        -max_out_: double
+        -integral_err_: double
+        -prev_measured_: double
+        -is_first_step_: bool
+        +PIDController(kp: double, ki: double, kd: double, min_out: double, max_out: double)
+        +compute(setpoint: double, measured: double, dt: double) double
+    }
+
+    MockActuator ..|> IActuator : implements
+    SensorManager *-- Sensor : owns via unique_ptr
+```
