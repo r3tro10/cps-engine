@@ -2,7 +2,7 @@
 
 A C++20 Cyber-Physical Systems (CPS) and Physical AI control prototype featuring a deterministic 50 Hz closed-loop joint control, RAII hardware abstraction, and sensor lifecycle management.
 
-The end-to-end processing pipeline follows: **Sense → Estimate → Plan → Actuate → Observe**.
+The end-to-end processing pipeline follows: **Simulate/Step → Observe State → Compute Effort → Actuate Command**.
 
 ---
 
@@ -10,6 +10,7 @@ The end-to-end processing pipeline follows: **Sense → Estimate → Plan → Ac
 - **Closed-Loop Control & Physics (`src/control/`, `src/actuators/`):** Features a discrete-time `PIDController` utilizing derivative-on-measurement, first-step guards, and integral anti-windup/saturation. Paired with an `IActuator` interface and a `MockActuator` that simulates 1-DOF joint dynamics via semi-implicit Euler integration.
 - **Real-Time Scheduling:** Executes a 50 Hz control loop (`dt = 0.02s`) via `std::chrono::steady_clock` and `std::this_thread::sleep_until`.
 - **RAII Sensor Management (`src/sensor*.cpp`):** Implements strict resource ownership using `std::unique_ptr`, non-copyable semantics, and deterministic teardown.
+- **Extensible Interface Layer (include/isensor.hpp):** Defines an abstract ISensor interface establishing the virtual contract for future polymorphic hardware driver implementations.
 
 ## Class Diagram
 
@@ -113,5 +114,19 @@ cmake -S . -B build
 cmake --build build
 ./build/cps_engine
 ```
+<details>
+<summary>View Sample Run Output</summary>
+
+```text
+=== CPS Engine: Boot Sequence ===
+[Hardware Connected] LiDAR_Front initialized. Heap buffer allocated at: 0x104eea030
+[LIFECYCLE] Transferring ownership to SensorManager...
+[Step 0] Pos: 0 rad | Err: 1.57 rad | Effort: 10
+...
+[Step 299] Pos: 1.57 rad | Err: 2.63767e-07 rad | Effort: 1.93673e-05
+[SHUTDOWN] System halt. Initiating RAII teardown...
+```
+</details>
+
 
 ---
