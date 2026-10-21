@@ -76,6 +76,25 @@ classDiagram
 
 ## Sequence Diagram
 
+```mermaid
+sequenceDiagram
+    autonumber
+    actor main as Main Loop (main.cpp)
+    participant motor as Motor (MockActuator)
+    participant pid as Controller (PIDController)
+
+    loop Every 20ms Tick (300 Steps)
+        main->>motor: update(dt)
+
+        main->>+motor: getState()
+        motor-->>-main: JointState (position, velocity, effort)
+
+        main->>+pid: compute(target_rad, state.position, dt)
+        pid-->>-main: effort: double
+
+        main->>motor: setCommand(effort)
+    end
+```
 
 
 ---
