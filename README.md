@@ -11,24 +11,8 @@ The end-to-end processing pipeline follows: **Sense → Estimate → Plan → Ac
 - **Real-Time Scheduling:** Executes a 50 Hz control loop (`dt = 0.02s`) via `std::chrono::steady_clock` and `std::this_thread::sleep_until`.
 - **RAII Sensor Management (`src/sensor*.cpp`):** Implements strict resource ownership using `std::unique_ptr`, non-copyable semantics, and deterministic teardown.
 
----
+## Class Diagram
 
-## Build and Run
-
-### Requirements
-- CMake 3.10+
-- C++20 compatible compiler (Clang / GCC / MSVC)
-- macOS or Linux
-
-### Build & Execution
-From the project root:
-```bash
-cmake -S . -B build
-cmake --build build
-./build/cps_engine
-```
-
----
 ```mermaid
 classDiagram
     direction LR
@@ -89,3 +73,26 @@ classDiagram
     MockActuator ..|> IActuator : implements
     SensorManager *-- Sensor : owns via unique_ptr
 ```
+
+## Sequence Diagram
+
+
+
+---
+
+## Build and Run
+
+### Requirements
+- CMake 3.10+
+- C++20 compatible compiler (Clang / GCC / MSVC)
+- macOS or Linux
+
+### Build & Execution
+From the project root:
+```bash
+cmake -S . -B build
+cmake --build build
+./build/cps_engine
+```
+
+---
