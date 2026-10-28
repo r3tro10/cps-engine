@@ -22,5 +22,5 @@ private:
     std::string name_;
 
     // --- README Requirement: Allocates a small heap buffer ---
-    int *heap_buffer_;
+    int* heap_buffer_;
 };

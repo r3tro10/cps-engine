@@ -7,9 +7,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Main Engine Executable
 add_executable(cps_engine
-    main.cpp
-    sensor.cpp
-    sensor_manager.cpp
+    src/main.cpp
+    src/sensor.cpp
+    src/sensor_manager.cpp
     src/control/pid.cpp
     src/actuators/mock_actuator.cpp
 )
