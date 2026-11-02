@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Phase 2: Linear Algebra & Spatial Kinematics
+find_package(Eigen3 REQUIRED)
+
 # Main Engine Executable
 add_executable(cps_engine
     src/main.cpp
@@ -14,6 +17,7 @@ add_executable(cps_engine
     src/actuators/mock_actuator.cpp
 )
 target_include_directories(cps_engine PRIVATE include)
+target_link_libraries(cps_engine PRIVATE Eigen3::Eigen)
 
 # Unit Test Suite
 enable_testing()
@@ -23,4 +27,5 @@ add_executable(test_pid
     src/actuators/mock_actuator.cpp
 )
 target_include_directories(test_pid PRIVATE include)
+target_link_libraries(test_pid PRIVATE Eigen3::Eigen)
 add_test(NAME PIDControlTest COMMAND test_pid)
