@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cmath>
 
-// Force assertions to remain active even in CMake -DCMAKE_BUILD_TYPE=Release builds
 #undef NDEBUG
 #include <cassert>
 
@@ -35,10 +34,8 @@ void test_actuator_saturation_clamp() {
 }
 
 void test_derivative_kick_prevention() {
-    // Pure Derivative controller (Kp = 0.0, Ki = 0.0, Kd = 5.0)
     PIDController d_only(0.0, 0.0, 5.0, -10.0, 10.0);
 
-    // Sudden step change in setpoint (0.0 -> 1.57) while motor is stationary at 0.0
     double out = d_only.compute(1.57, 0.0, 0.02);
     assert(out == 0.0 && "Derivative kick detected on initial step!");
 
