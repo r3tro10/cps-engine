@@ -2,10 +2,7 @@
 
 #include <string>
 
-/**
- * @brief Abstract hardware interface layer for physical system telemetries.
- * Forces derived nodes to implement safe lifecycle controls and explicit read procedures.
- */
+
 class ISensor
 {
 public:
