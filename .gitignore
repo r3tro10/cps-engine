@@ -3,3 +3,4 @@ build/
 *.o
 *.obj
 .DS_Store
+.github/copilot-instructions.md
