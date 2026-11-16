@@ -13,6 +13,7 @@ The end-to-end processing pipeline follows: **Simulate/Step → Observe State �
 * **Deterministic 50 Hz Execution Loop:** Monotonic clock synchronization (`std::chrono::steady_clock`) driving second-order damped actuator dynamics to sub-microradian steady-state convergence.
 * **RAII Resource Management (`SensorManager`):** Exclusive hardware handle ownership via `std::unique_ptr` and move semantics (`std::move`), guaranteeing deterministic teardown without manual memory management.
 * **Zero-Sleep Verification Suite (CTest):** Deterministic unit tests verifying saturation bounds, bad time-step rejection, derivative-kick suppression, and closed-loop convergence in under 10 ms.
+* **3D Spatial Kinematics (`KinematicsSolver`):** Forward kinematics via `forwardKinematics` returning `Eigen::Matrix4d` and inverse kinematics via `inverseKinematics` returning `std::optional<Eigen::Vector3d>`, with positive link-length validation.
 
 
 
@@ -29,14 +30,18 @@ cps-engine/
 │   │   └── pid.hpp
 │   ├── core/
 │   │   └── types.hpp
+│   ├── kinematics/
+│   │   └── kinematics.hpp
 │   └── sensors/
 ├── src/
 │   ├── actuators/mock_actuator.cpp
 │   ├── control/pid.cpp
+│   ├── kinematics/kinematics.cpp
 │   ├── sensor.cpp
 │   ├── sensor_manager.cpp
 │   └── main.cpp
 └── tests/
+    ├── test_kinematics.cpp
     └── test_pid.cpp
 ```
 
@@ -130,7 +135,7 @@ sequenceDiagram
 
 
 ## Active Development Roadmap
-- Phase 2 (In Progress): 3D Forward & Inverse Kinematics solver utilizing Eigen3 homogeneous transformations and workspace boundary validation.
+- Phase 2 (Implemented): 3D Forward & Inverse Kinematics solver utilizing Eigen3 homogeneous transformations and workspace boundary validation.
 - Phase 3 (Planned): Containerized ROS 2 joint-state publisher and RViz 6-DOF manipulator visualization.
 
 ## Build and Run
@@ -138,6 +143,7 @@ sequenceDiagram
 ### Requirements
 - CMake 3.10+
 - C++20 compatible compiler (Clang / GCC / MSVC)
+- Eigen3
 - macOS or Linux
 
 ### Build & Verification

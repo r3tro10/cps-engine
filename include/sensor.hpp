@@ -6,7 +6,11 @@ class Sensor
 public:
     // Constructor and Destructor
     Sensor(std::string name);
-    ~Sensor(); // Crucial for cleaning up our heap buffer (RAII)
+    // The ~Sensor destructor deletes the original unique_ptr to prevent tangling refrences after transfering ownership
+    // Crucial for cleaning up our heap buffer (RAII)
+    ~Sensor();
+    // Sensor is destroyed right after being created
+
 
     // --- README Requirement: Non-copyable sensor objects ---
     Sensor(const Sensor &) = delete;            // Disallow copy constructor

@@ -16,8 +16,8 @@ Sensor::~Sensor()
 {
     if (heap_buffer_ != nullptr)
     {
-        delete[] heap_buffer_; // RAII: Fulfilling the "Automatic cleanup" promise
-        std::cout << "[Hardware Disconnected] " << name_ << " released dynamic heap buffer.\n";
+        delete[] heap_buffer_; // RAII: Fulfilling the "Automatic cleanup" promise 
+        std::cout << "[Hardware Disconnected] " << name_ << " released dynamic heap buffer.\n"; 
     }
 }
 
