@@ -51,6 +51,19 @@ cps-engine/
 classDiagram
     direction LR
 
+    class JointState {
+        <<struct>>
+        +position: double
+        +velocity: double
+        +effort: double
+    }
+
+    class ControlCommand {
+        <<struct>>
+        +setpoint: double
+        +timestamp_ns: uint64_t
+    }
+
     class IActuator {
         <<interface>>
         +~IActuator()
@@ -77,14 +90,14 @@ classDiagram
 
     class Sensor {
         -name_: string
-        -heap_buffer_: int_ptr
+        -heap_buffer_: int*
         +Sensor(name: string)
         +~Sensor()
         +read_telemetry() void
     }
 
     class SensorManager {
-        -sensors_: vector~Sensor~
+        -sensors_: vector~unique_ptr~Sensor~~
         +SensorManager()
         +~SensorManager()
         +add_sensor(sensor: unique_ptr~Sensor~) void
@@ -104,8 +117,24 @@ classDiagram
         +compute(setpoint: double, measured: double, dt: double) double
     }
 
+    class ArmGeometry {
+        <<struct>>
+        +base_height: double
+        +upper_arm_length: double
+        +forearm_length: double
+    }
+
+    class KinematicsSolver {
+        -geometry_: ArmGeometry
+        +KinematicsSolver(geometry: ArmGeometry)
+        +forwardKinematics(q: Vector3d) Matrix4d
+        +inverseKinematics(target_xyz: Vector3d) optional~Vector3d~
+    }
+
     MockActuator ..|> IActuator : implements
+    MockActuator *-- JointState : holds
     SensorManager *-- Sensor : owns via unique_ptr
+    KinematicsSolver *-- ArmGeometry : configured by
 ```
 
 ## Sequence Diagram
@@ -113,21 +142,41 @@ classDiagram
 ```mermaid
 sequenceDiagram
     autonumber
-    actor main as Main Loop (main.cpp)
-    participant motor as Motor (MockActuator)
-    participant pid as Controller (PIDController)
+    actor main as Main (main.cpp)
+    participant sm as SensorManager
+    participant sensor as Sensor Nodes (LiDAR, IMU, Cam)
+    participant motor as MockActuator
+    participant pid as PIDController
 
-    loop Every 20ms Tick (300 Steps)
-        main->>motor: update(dt)
-
-        main->>+motor: getState()
-        motor-->>-main: JointState (position, velocity, effort)
-
-        main->>+pid: compute(target_rad, state.position, dt)
-        pid-->>-main: effort: double
-
-        main->>motor: setCommand(effort)
+    rect rgb(40, 44, 52)
+        Note over main, sensor: Boot Sequence & RAII Ownership Transfer
+        main->>+sensor: make_unique<Sensor>(name)
+        sensor-->>-main: unique_ptr<Sensor> (allocates heap_buffer_)
+        main->>sm: add_sensor(std::move(sensor))
+        main->>+sm: read_all_sensors()
+        sm->>+sensor: read_telemetry()
+        sensor-->>-sm: log telemetry
+        sm-->>-main: cycle complete
     end
+
+    rect rgb(35, 45, 55)
+        Note over main, pid: Deterministic 50 Hz Closed-Loop Control (300 Steps)
+        loop Every 20ms Tick (dt = 0.02s)
+            main->>motor: update(dt)
+            main->>+motor: getState()
+            motor-->>-main: JointState (position, velocity, effort)
+            main->>+pid: compute(target_rad, state.position, dt)
+            pid-->>-main: effort: double (clamped)
+            main->>motor: setCommand(effort)
+        end
+    end
+
+    rect rgb(50, 38, 42)
+        Note over main, sensor: Scope Exit & Deterministic RAII Teardown
+        main->>sm: ~SensorManager()
+        sm->>sensor: ~Sensor() (delete[] heap_buffer_)
+    end
+
 ```
 
 
